@@ -1,0 +1,113 @@
+.hidden {
+    display: none;
+}
+
+.lineThrough {
+    text-decoration: line-through;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+button {
+    cursor: pointer;
+    transition: all 300ms ease-in;
+    outline: none;
+    border: none;
+    background: transparent;
+}
+
+button:hover {
+    transform: scale(1.1);
+}
+
+.mainTitle {
+    width: 100%;
+    height: 50px;   
+    font-size: 32px;
+    text-align: center;
+    padding: 10px;
+}
+
+.mainContainer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.toDoContainer {
+    width: 500px;
+    height: 700px;
+    box-shadow: 4px 9px 32px 6px rgba(181,181,181,0.99);
+}
+
+.listStorage {
+    width: 400px;
+    height: 600px;
+    box-shadow: 4px 9px 32px 6px rgba(181,181,181,0.99);
+}
+
+
+/*  toDoContainer 내부 */
+
+.setToDoTitle,
+.toDoTitle {
+    width: 100%;
+    height: 50px;
+}
+
+.setToDoTitle,
+.toDo__input {
+    border: none;
+    outline: none;
+    padding: 10px;
+    font-size: 20px;
+}
+
+.toDoTitle {
+    text-align: center;
+    font-size: 32px;
+    padding: 5px 0;
+}
+
+.toDoList {
+    height: 600px;
+}
+
+.toDoItem {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+
+.btns {
+    align-items: center;
+}
+
+.btns::before {
+    content: "|";
+    color: gray;
+}
+
+.toDo__delete:hover {
+    color: tomato;
+}
+
+.toDo__input {
+    width: 80%;
+    height: 50px;
+}
+
+
+
+
+
+
+
+
+/* listStorage 내부 */
+
+
+
