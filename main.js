@@ -4,15 +4,9 @@
         - 아무것도 입력하지 않았을 땐 동작 x
         - scroll bar가 생기면 새로 추가한 목록에 focus가 가도록
         - 항상 input에 focus가 가도록 -> 바로 바로 입력하기 위해서(scroll APi)
-    2. 목록에 있는 거 각각 삭제 하는 버튼
-        - 목록 전체 초기화 버튼도 추가
-    3. 각 list별 완료되었는지 여부를 보여주는 checkbox -> check하면 가운데 줄
-    4. 제목별 todo-list 저장 
-        - 제목수정기능 -> 제목 수정하면 localstorage도 업데이트??
-        - 한 제목에는 하나의 Todo-list만 저장이 가능함
-        - 저장된 list를 클릭하면 옆에 저장된 데이터가 나타나도록
-        - 각 제목 별 todo는 수정이 가능하고 기존에 쓰던 todo를 저장하지 않으면 기존에 쓰던 것은 초기화
-    5. 제목 별 todo목록에 check여부를 %로 나타내기즉, 완료 여부 %로
+    2. 각 list별 완료되었는지 여부를 보여주는 checkbox -> check하면 가운데 줄
+    3. checkbox 체크된 거 기준으로 몇% 했는지 보여주는 progressbar
+    
 
 
     반응형에 대해서 더 공부한 다음 반응형으로 다시 디자인
@@ -21,45 +15,17 @@
         - 데이터는 어떤 형식으로 어떻게 저장할것인가??
         - 로그인 기능 구현해서 사용자 별 todo 저장
 */
+
 const toDoList = document.querySelector(".toDoList");
+const toDoForm = document.querySelector(".toDoForm");
 const toDo__input = document.querySelector(".toDo__input");
 const toDo__inputBtn = document.querySelector(".toDo__inputBtn");
-const toDoTitle__input = document.querySelector(".setToDoTitle");
-const toDoTitle = document.querySelector(".toDoTitle");
+const myProgressBar = document.querySelector(".myProgressBar");
+const TODO_KEY = "todo";
 const HIDDEN_CLASS = "hidden";
 const LINETHROUGH_CLASS = "lineThrough";
 let listArr = [];
-
-function onAdd(event) {
-    const title = toDoTitle.innerText;
-    if(title === "") return;
-    const inputValue = toDo__input.value;
-    toDo__input.value = "";
-    toDo__input.focus();
-    const newObj = {
-        value: inputValue,
-        id: Date.now(),
-    };
-    listArr.push(newObj);
-    const li = createListElement(newObj);
-    displayList(li);
-    setLocalStorage(title);
-}
-
-function handleCheck(event,checkBox) {
-    const targetText = event.target.parentNode.previousSibling;
-    if(checkBox.checked) targetText.classList.add(LINETHROUGH_CLASS);
-    else targetText.classList.remove(LINETHROUGH_CLASS);
-}
-
-function deleteList(event) {
-    const target = event.target.parentElement.parentElement;
-    target.remove();
-    listArr = listArr.filter((item) => item.id !== parseInt(target.id));
-    setLocalStorage();
-}
-
-// title을 전역변수로 해야하나...
+let title = ""; // title 전역변수 사용은 많이 고려 해봐야 할 듯
 
 function createListElement(newObj) {
     const li = document.createElement("li");
@@ -72,11 +38,8 @@ function createListElement(newObj) {
     div.className = "btns";
     const checkBox = document.createElement("input");
     checkBox.type = "checkbox";
-    checkBox.addEventListener("click", (event) => handleCheck(event,checkBox));
     const deleteBtn = document.createElement("button");
     deleteBtn.setAttribute('class', "toDo__delete fas fa-trash");
-    deleteBtn.addEventListener("click", deleteList);
-    
     div.appendChild(checkBox);
     div.appendChild(deleteBtn);
     li.appendChild(span);
@@ -86,20 +49,56 @@ function createListElement(newObj) {
 
 function displayList(li) {toDoList.appendChild(li)};
 
-function setLocalStorage(title) {
-    localStorage.setItem(title,listArr)
+function setLocalStorage() {
+    localStorage.setItem(TODO_KEY,JSON.stringify(listArr));
 }
 
-toDo__inputBtn.addEventListener("click", onAdd);
+function onAdd(event) {
+    event.preventDefault();
+    const inputValue = toDo__input.value;
+    if(inputValue === "") return;
+    toDo__input.value = "";
+    toDo__input.focus();
+    const newObj = {
+        value: inputValue,
+        id: Date.now(),
+    };
+    listArr.push(newObj);
+    const li = createListElement(newObj);
+    displayList(li);
+    setLocalStorage();
+}
 
+toDoForm.addEventListener("submit", onAdd);
 
-function setToDoTitle(event) {
-    if(event.key === 'Enter') {
-        toDoTitle.innerText = toDoTitle__input.value;
-        toDoTitle__input.value="";
-        toDoTitle.classList.remove(HIDDEN_CLASS);
-        toDoTitle__input.classList.add(HIDDEN_CLASS);
+function handleCheck(event) {
+    const targetText = event.target.parentNode.previousSibling;
+    const checkBox = event.target;
+    if(checkBox.checked) targetText.classList.add(LINETHROUGH_CLASS);
+    else targetText.classList.remove(LINETHROUGH_CLASS);
+    updateProgressBar();
+}
+
+function deleteList(event) {
+    const target = event.target.parentElement.parentElement;
+    target.remove();
+    listArr = listArr.filter((item) => item.id !== parseInt(target.id));
+    setLocalStorage();
+}
+
+toDoList.addEventListener("click",(event) => {
+    const target = event.target;
+    if(target.tagName === "INPUT") handleCheck(event);
+    else if(target.tagName === "BUTTON") deleteList(event);
+    else return;
+}); 
+
+function updateProgressBar() {
+    const itemsCount = toDoList.childElementCount;
+    let counter = 0;
+    for(let i = 0; i < itemsCount; i++) {
+        if(toDoList.children[i].children[1].children[0].checked) counter++
     }
+    const percentage = Math.floor((counter/itemsCount)*100);
+    myProgressBar.style.transform = `translateX(${percentage-100}%)`;
 }
-toDoTitle__input.addEventListener("keydown", setToDoTitle);
-

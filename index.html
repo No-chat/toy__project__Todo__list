@@ -14,41 +14,15 @@
     <header class="mainTitle">Make your own toDo-list</header>
     <main class="mainContainer">
         <section class="toDoContainer">
-            <input class="setToDoTitle" type="text" placeholder="Set title of your todo-list"/>
-            <header class="toDoTitle hidden"></header>
-            <ul class="toDoList">
-                <li class="toDoItem">
-                    <span class="toDo__text">오늘 해야할 일</span>
-                    <div class="btns">
-                        <input class="toDo__check" type="checkbox" />
-                        <button class="toDo__delete fas fa-trash"></button>
-                    </div>
-                </li>
-            </ul>
-            <footer>
+            <ul class="toDoList"></ul>
+            <form class="toDoForm">
                 <input class="toDo__input" type="text" />
                 <button class="toDo__inputBtn"><i class="fas fa-plus"></i></button>
-            </footer>
+            </form>
         </section>
-        <div class="handleStorage">
-            <button class="setStorage">
-                Store your toDo-list!</br>
-                <i class="fas fa-arrow-right"></i>
-            </button></br>
-            <button class="callStorage">
-                Call your toDo-list!</br>
-                <i class="fas fa-arrow-left"></i>
-            </button>
-        </div>
-        <section class="listStorage">
-            <header></header>
-            <ul class="storedList">
-                <li>
-                    <span class="storedTitle">dfsafwefsdf</span>
-                    <div class="progressBar"></div>
-                </li>
-            </ul>
-        </section>
+        <footer class="progressBar">
+            <div class="myProgressBar"></div>
+        </footer>
     </main>
     <footer class="musicPlayer"></footer>
 </body>
