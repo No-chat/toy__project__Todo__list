@@ -1,3 +1,13 @@
+:root {
+    /* night mode */
+    --night-bg-color: ;
+    --night-font-color: #CFE1F1;
+    --night-moon-color: #F5F3CE;
+
+    /* day mode */
+}
+
+
 .hidden {
     display: none;
 }
@@ -7,7 +17,10 @@
 }
 
 body {
-    background-color: #FAA34D;
+    background-image: url(bgImg/8048.jpg);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
 }
 
 * {
@@ -26,12 +39,35 @@ button:hover {
     transform: scale(1.1);
 }
 
+#moon {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: var(--night-moon-color);
+    box-shadow: 0px 0px 11px 7px rgba(245,243,206,0.87);
+    top: 20px;
+    left: 50px;
+    transition: all ease-in 0.5s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--night-moon-color);
+}
+
+#moon:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 0px 18px 10px rgba(245,243,206,0.87);
+    color: black;
+}
+
 .mainTitle {
     width: 100%;
     height: 50px;   
     font-size: 32px;
     text-align: center;
     padding: 10px;
+    color: var(--night-font-color);
 }
 
 .mainContainer {
@@ -60,32 +96,51 @@ button:hover {
 
 .toDoList {
     height: 650px;
-    background-color: white;
+    background-color: #69798B;
+    overflow-y: auto;
+    color: var(--night-font-color);
+    font-weight: bold;
 }
 
 .toDoItem {
     display: flex;
     justify-content: space-between;
-    padding: 10px;
+    margin: 10px;
+    align-items: center;
+    border-bottom: var(--night-font-color) solid 1px;
 }
 
 
 .btns {
+    display: flex;
     align-items: center;
+    padding: 5px;
 }
 
-.btns::before {
-    content: "|";
-    color: gray;
+
+.btns input,
+.toDo__delete {
+    margin: 5px;
+    padding: 0;
 }
 
 .toDo__delete:hover {
     color: tomato;
 }
 
+
+.toDoForm {
+    display: flex;
+    
+}
 .toDo__input {
     width: 80%;
     height: 50px;
+}
+.toDo__inputBtn {
+    padding: 0;
+    width: 20%;
+    font-size: 24px;
 }
 
 .progressBar {
@@ -106,6 +161,17 @@ button:hover {
     transition: all ease-in 0.5s;
 }
 
+
+
+
+.toDoList::-webkit-scrollbar {
+    width: 5px;
+    background-color: white;
+}
+
+.toDoList::-webkit-scrollbar-thumb {
+    background-color: lightgray;
+}
 
 
 

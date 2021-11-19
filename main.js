@@ -6,7 +6,11 @@
         - 항상 input에 focus가 가도록 -> 바로 바로 입력하기 위해서(scroll APi)
     2. 각 list별 완료되었는지 여부를 보여주는 checkbox -> check하면 가운데 줄
     3. checkbox 체크된 거 기준으로 몇% 했는지 보여주는 progressbar
-    
+    4. night모드 day모드 변경할 수 있는 toggle스위치
+        - night모드일 때 디자인 색상과 디자인 테마 생각 --> 달 
+        - day모드일 때 디자인 색생과 디자인 테마 생각 --> 해
+    5. 현재 시간과 날짜 알려주는 기능
+    6. 현재 날씨 알려주는 기능
 
 
     반응형에 대해서 더 공부한 다음 반응형으로 다시 디자인
@@ -47,7 +51,10 @@ function createListElement(newObj) {
     return li;
 }
 
-function displayList(li) {toDoList.appendChild(li)};
+function displayList(li) {
+    toDoList.appendChild(li);
+    li.scrollIntoView();
+};
 
 function setLocalStorage() {
     localStorage.setItem(TODO_KEY,JSON.stringify(listArr));
@@ -102,3 +109,31 @@ function updateProgressBar() {
     const percentage = Math.floor((counter/itemsCount)*100);
     myProgressBar.style.transform = `translateX(${percentage-100}%)`;
 }
+
+const savedToDo = JSON.parse(localStorage.getItem(TODO_KEY));
+if(savedToDo !== null) {
+    listArr = savedToDo;
+    listArr.forEach((item) => {
+        const li = createListElement(item);
+        displayList(li);
+    });
+    setLocalStorage();
+}
+
+
+
+// clock
+const clock = document.querySelector(".clock");
+const date = new Date();
+
+function handleClock() {
+    const hour = date.getHours();
+    const minute = date.getMinutes();
+    let amPmdecider = "";
+    if(hour >= 0 && hour <= 11) amPmdecider = "AM";
+    else if(hour >= 12 && hour <= 23) amPmdecider = "PM";
+    else return;
+    clock.textContent = `${hour} : ${String(minute).padStart(2,"0")} ${amPmdecider}`;
+}
+
+setInterval(handleClock,1000);
